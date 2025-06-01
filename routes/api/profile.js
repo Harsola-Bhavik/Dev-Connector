@@ -1,7 +1,9 @@
 const express = require('express');
+const request = require('request');
+const config = require('config');
 const router = express.Router();
 const auth = require('../../middleware/auth')
-const {check ,validationResult} = require('express-validator');
+const {check ,validationResult, header} = require('express-validator');
 
 const Profile = require('../../models/Profile');
 const User = require('../../models/User');
@@ -306,6 +308,43 @@ router.delete('/education/:edu_id',auth, async(req,res) => {
         
     }
     
+});
+
+// @route GET api/profile/github/:username
+// @desc GET user repos from github
+// @access public
+
+router.get('/github/:username', (req, res) => {
+    try {
+        const options = {
+            uri: `https://api.github.com/users/${req.params.username}/repos?per_page=5&sort=created:asc&client_id=${config.get('githubClientId')}&client_secret=${config.get('githubClientSecret')}`,
+            method: 'GET',
+            headers: {
+                'User-Agent': 'Dev-Connector-App' // GitHub requires a user-agent header
+            }
+        };
+
+        request(options, (error, response, body) => {
+            if (error) {
+                console.error(error);
+                return res.status(500).json({ msg: 'Error connecting to GitHub' });
+            }
+
+            if (response.statusCode !== 200) {
+                return res.status(404).json({ msg: 'No GitHub profile found' });
+            }
+
+            try {
+                res.json(JSON.parse(body));
+            } catch (parseError) {
+                console.error(parseError);
+                res.status(500).json({ msg: 'Error parsing GitHub response' });
+            }
+        });
+    } catch (err) {
+        console.error(err.message);
+        res.status(500).send('Server error');
+    }
 });
 
 module.exports = router; 
