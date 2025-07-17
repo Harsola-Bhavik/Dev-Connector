@@ -4,7 +4,7 @@
   "description": "Social network for developers",
   "main": "server.js",
   "scripts": {
-    "start": "node server",
+    "start": "node --no-warnings=DEP0040 server.js",
     "server": "nodemon server"
   },
   "repository": {
@@ -28,6 +28,7 @@
     "passport": "^0.7.0",
     "passport-github": "^1.1.0",
     "punycode": "^2.3.1",
+    "punycode.js": "^2.3.1",
     "request": "^2.88.2"
   },
   "devDependencies": {
