@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node --no-warnings=DEP0040 server.js",
-    "server": "nodemon server"
+    "server": "nodemon server",
+    "client": "npm start --prefix client --no-deprecation",
+    "dev": "concurrently \"npm run server \" \"npm run client\""
   },
   "repository": {
     "type": "git",
