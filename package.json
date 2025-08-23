@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/Harsola-Bhavik/Dev-Connector#readme",
   "dependencies": {
+    "@reduxjs/toolkit": "^2.8.2",
     "bcryptjs": "^3.0.2",
     "config": "^4.0.0",
     "express": "^5.1.0",
