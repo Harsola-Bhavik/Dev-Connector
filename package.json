@@ -22,7 +22,8 @@
   "dependencies": {
     "@reduxjs/toolkit": "^2.8.2",
     "bcryptjs": "^3.0.2",
-    "config": "^4.0.0",
+    "config": "^4.2.0",
+    "cores": "^0.8.5",
     "express": "^5.1.0",
     "express-validator": "^7.2.1",
     "gravatar": "^1.8.2",

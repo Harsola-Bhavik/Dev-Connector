@@ -82,8 +82,11 @@ router.post('/' ,[
     
     } catch (err) {
         
-        console.log(err.message);
-        res.status(500).send('Server error');
+        console.error('Registration error:', err.message);
+        if (err.name === 'MongooseError' || err.message.includes('buffering timed out')) {
+            return res.status(503).json({ errors: [{ msg: 'Database unavailable. Please try again later.' }] });
+        }
+        res.status(500).json({ errors: [{ msg: 'Server error' }] });
     }
 
 
