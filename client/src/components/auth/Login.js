@@ -27,7 +27,7 @@ const Login = ({ login, isAuthenticated }) => {
     return <Navigate to="/dashboard" />;
   }
   return (
-    <Fragment>
+    <div className="auth-card animated-fade-in">
       <h1 className="large text-primary">Sign In</h1>
       <p className="lead">
         <i className="fas fa-user"></i> SignIn Your Account
@@ -42,6 +42,7 @@ const Login = ({ login, isAuthenticated }) => {
             value={email}
             onChange={onChange}
             required
+            className="input-modern"
           />
         </div>
         <div className="form-group">
@@ -52,6 +53,7 @@ const Login = ({ login, isAuthenticated }) => {
             value={password}
             onChange={onChange}
             minLength="6"
+            className="input-modern"
           />
         </div>
         <input type="submit" className="btn btn-primary" value="Login" />
@@ -59,7 +61,7 @@ const Login = ({ login, isAuthenticated }) => {
       <p className="my-1">
         Don't have an account? <Link to="/register">SignUp</Link>
       </p>
-    </Fragment>
+    </div>
   );
 };
 

@@ -7,7 +7,9 @@ const config = require('config');
 const {check , validationResult} = require('express-validator');
 
 const User = require('../../models/User');
-
+const multer = require('multer');
+const path = require('path');
+const auth = require('../../middleware/auth');
 // @route POST api/users
 // @desc Register User
 // @access Public
@@ -92,6 +94,48 @@ router.post('/' ,[
 
 
 
+});
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, 'public/uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, req.user.id + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 5000000 },
+  fileFilter: function(req, file, cb) {
+    const filetypes = /jpeg|jpg|png|gif/;
+    const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
+    const mimetype = filetypes.test(file.mimetype);
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb('Error: Images Only!');
+    }
+  }
+});
+
+// @route POST api/users/avatar
+// @desc Upload user avatar
+// @access Private
+router.post('/avatar', auth, upload.single('avatar'), async (req, res) => {
+  if (!req.file) {
+    return res.status(400).json({ errors: [{ msg: 'Please upload a file' }] });
+  }
+
+  try {
+    const user = await User.findById(req.user.id);
+    user.avatar = `/public/uploads/${req.file.filename}`;
+    await user.save();
+    res.json(user.avatar);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server Error');
+  }
 });
 
 module.exports = router;

@@ -29,6 +29,7 @@ router.post('/' ,[auth, [
             text:  req.body.text,
             name: user.name,
             avatar: user.avatar,
+            image: req.body.image,
             user: req.user.id
         });
 
@@ -236,5 +237,43 @@ router.delete('/comment/:id/:comment_id', auth , async (req, res) => {
     }
 });
 
+// @route PUT api/posts/:id
+// @desc Edit a post
+// @access private
+router.put('/:id', [auth, [
+    check('text', 'Text is required').not().isEmpty()
+]], async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+        return res.status(400).json({ errors: errors.array() });
+    }
+
+    try {
+        const post = await Post.findById(req.params.id);
+
+        if (!post) {
+            return res.status(404).json({ msg: 'Post not found' });
+        }
+
+        // Check user
+        if (post.user.toString() !== req.user.id) {
+            return res.status(401).json({ msg: 'User not authorized' });
+        }
+
+        post.text = req.body.text;
+        if (req.body.image !== undefined) {
+            post.image = req.body.image;
+        }
+
+        await post.save();
+        res.json(post);
+    } catch (err) {
+        console.error(err.message);
+        if (err.kind === 'ObjectId') {
+            return res.status(404).json({ msg: 'Post not found' });
+        }
+        res.status(500).send('Server Error');
+    }
+});
 
 module.exports = router;
