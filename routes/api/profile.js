@@ -58,6 +58,7 @@ router.post('/',[auth, [
         twitter,
         instagram,
         linkedin,
+        avatar
     } = req.body;
 
     // Build profile object
@@ -83,6 +84,10 @@ router.post('/',[auth, [
 
 
     try {
+        if (avatar) {
+            await User.findByIdAndUpdate(req.user.id, { $set: { avatar } });
+        }
+
         let profile = await Profile.findOne({ user: req.user.id});
 
         if(profile){

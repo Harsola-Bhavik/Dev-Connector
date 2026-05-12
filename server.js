@@ -6,8 +6,10 @@ const app = express();
 //connect database
 connectDB();
 
-// Init Middlewware
+// Init Middleware
 app.use(express.json({extended : false}));
+const path = require('path');
+app.use('/public', express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req,res) => res.send('Api Running'));
 

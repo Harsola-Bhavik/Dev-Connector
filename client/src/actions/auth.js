@@ -25,7 +25,7 @@ export const loadUser = () => async dispatch => {
 
     dispatch({
       type: USER_LOADED,
-      user: res.data
+      payload: res.data
     });
   } catch (err) {
     dispatch({
@@ -96,6 +96,29 @@ export const login = (email, password) => async dispatch => {
   }
 };
 
+
+// Upload Avatar
+export const uploadAvatar = (formData) => async dispatch => {
+  try {
+    const config = {
+      headers: {
+        'Content-Type': 'multipart/form-data'
+      }
+    };
+    
+    await axios.post('/api/users/avatar', formData, config);
+    
+    dispatch(loadUser());
+    dispatch(setAlert('Profile Picture Updated', 'success'));
+  } catch (err) {
+    const errors = err.response?.data?.errors;
+    if (errors) {
+      errors.forEach(error => dispatch(setAlert(error.msg, 'danger')));
+    } else {
+      dispatch(setAlert('Server Error during upload', 'danger'));
+    }
+  }
+};
 
 //LOGOUT / CLEAR PROFILE
 export const logout = () => dispatch => {

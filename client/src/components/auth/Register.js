@@ -35,7 +35,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
 
 
   return (
-    <Fragment>
+    <div className="auth-card animated-fade-in">
       <h1 className="large text-primary">Sign Up</h1>
       <p className="lead">
         <i className="fas fa-user"></i> Create Your Account
@@ -48,6 +48,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             name="name"
             value={name}
             onChange={onChange}
+            className="input-modern"
             // required
           />
         </div>
@@ -58,6 +59,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             name="email"
             value={email}
             onChange={onChange}
+            className="input-modern"
             // required
           />
           <small className="form-text">
@@ -72,6 +74,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             name="password"
             value={password}
             onChange={onChange}
+            className="input-modern"
             // minLength="6"
           />
         </div>
@@ -82,6 +85,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
             name="password2"
             value={password2}
             onChange={onChange}
+            className="input-modern"
             minLength="6"
           />
         </div>
@@ -90,7 +94,7 @@ const Register = ({ setAlert, register, isAuthenticated }) => {
       <p className="my-1">
         Already have an account? <Link to="/login">SignIn</Link>
       </p>
-    </Fragment>
+    </div>
   );
 };
 
